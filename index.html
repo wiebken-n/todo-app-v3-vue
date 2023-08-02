@@ -21,7 +21,8 @@
             <div class="todo-input-container">
                 <div class="text-input-container">
                     <input class="text-todo-input" type="text" name="todo-input" id="todo-input"
-                        placeholder="What needs to be done?" value="" v-model.trim="newTodoDescription">
+                        @keydown.enter="addTodo()" placeholder="What needs to be done?" value=""
+                        v-model.trim="newTodoDescription">
                     <button class="button-add-todo" @click="addTodo()">Add Todo</button>
                 </div>
 

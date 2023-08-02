@@ -11,30 +11,23 @@ Vue.createApp({
   },
   methods: {
     addTodo() {
-      // take todo description (value of #todo-input) and create new todo with it
-      // in API
       const newTodo = { description: this.newTodoDescription, done: false };
       let double = false;
-      // no button action if input is empty
       if (this.newTodoDescription === "") {
         console.log("No valid Todo");
+        alert("Please enter a description for your Todo");
         return;
       } else {
         console.log("Valid Todo");
         this.state.forEach((todo) => {
-          console.log(todo.description);
-          console.log(this.newTodoDescription);
-          // check for doubles
           if (
             newTodo.description.toString().toLowerCase() ===
             todo.description.toString().toLowerCase()
           ) {
             double = true;
-            console.log("Todo already exists");
             return;
           }
         });
-        console.log(double);
         this.newTodoDescription = "";
         if (!double) {
           fetch("http://localhost:4730/todos", {
@@ -48,29 +41,20 @@ Vue.createApp({
               this.syncStorage(this.state);
               this.filterTodos();
             });
-
-          console.log("its new!");
         }
       }
       this.syncStorage(this.state);
     },
 
     updateTodo() {
-      console.log(event.target.id);
-      console.log();
       let todoIndex = 0;
       let i = 0;
-
       for (let i = 0; i < this.state.length; i++) {
         if (event.target.id === this.state[i].id) {
           todoIndex = i;
-          console.log(i);
-          console.log(this.state[i].id);
-          console.log(this.state[i]);
         }
       }
       const todo = this.state[i];
-      console.log(this.state[i]);
       fetch("http://localhost:4730/todos/" + event.target.id, {
         method: "PUT",
         headers: { "content-type": "application/JSON" },
@@ -80,7 +64,6 @@ Vue.createApp({
         .then((updatedTodo) => {
           this.syncStorage(this.state);
           this.filterTodos();
-          // save state to local storage
         });
     },
 
@@ -103,11 +86,7 @@ Vue.createApp({
           }
         });
       }
-      console.log(tempState);
       this.stateRendered = tempState;
-      console.log(this.stateRendered);
-
-      // render todos according to radio button status
     },
 
     removeTodos() {
@@ -133,16 +112,6 @@ Vue.createApp({
       localStorage.setItem("storageState", jsonState);
     },
   },
-  computed: {
-    /*
-    alertNoTodoDescription() {
-      return alert("Please enter a description for your Todo");
-    },
-    alertTodoDouble() {
-      return alert("This Todo already exists");
-    },
-    */
-  },
 
   created() {
     fetch("http://localhost:4730/todos")
@@ -150,7 +119,6 @@ Vue.createApp({
       .then((todosArrayApi) => {
         this.state = todosArrayApi;
         this.stateRendered = todosArrayApi;
-        console.log(this.state);
         this.syncStorage(this.state);
       });
   },
