@@ -12,30 +12,42 @@ Vue.createApp({
     addTodo() {
       // take todo description (value of #todo-input) and create new todo with it
       // in API
-
       const newTodo = { description: this.newTodoDescription, done: false };
       let double = false;
       // no button action if input is empty
       if (this.newTodoDescription === "") {
         console.log("No valid Todo");
-        // this.alertNoTodoDescription();
+        return;
       } else {
         console.log("Valid Todo");
         this.state.forEach((todo) => {
-          console.log(todo);
+          console.log(todo.description);
+          console.log(this.newTodoDescription);
           // check for doubles
           if (
-            this.newTodoDescription.toString().toLowerCase() ===
+            newTodo.description.toString().toLowerCase() ===
             todo.description.toString().toLowerCase()
           ) {
             double = true;
             console.log("Todo already exists");
-            //alertTodoDouble();
-            this.newTodoDescription = "";
-          } else {
-            console.log("now we'll ad this todo");
+            return;
           }
         });
+        console.log(double);
+        this.newTodoDescription = "";
+        if (!double) {
+          fetch("http://localhost:4730/todos", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify(newTodo),
+          })
+            .then((res) => res.json())
+            .then((newTodoFromApi) => {
+              this.state.push(newTodoFromApi);
+            });
+
+          console.log("its new!");
+        }
       }
 
       /*else {
@@ -78,12 +90,14 @@ Vue.createApp({
     },
   },
   computed: {
+    /*
     alertNoTodoDescription() {
       return alert("Please enter a description for your Todo");
     },
     alertTodoDouble() {
       return alert("This Todo already exists");
     },
+    */
   },
 
   created() {
