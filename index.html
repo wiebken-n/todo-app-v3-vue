@@ -49,10 +49,10 @@
             </div>
             <div class="todo-list-container">
                 <ul class="todo-list" id="todo-list">
-                    <li v-for="todo of stateRendered" :key="todo.id">
-                        <input type="checkbox" v-model="todo.done" :checked="todo.done" :id="'todo-'+todo.id"
+                    <li v-for="todo of stateRendered" :key="'todo-'+todo.id">
+                        <input type="checkbox" v-model="todo.done" :checked="todo.done" :id="todo.id"
                             @change="updateTodo">
-                        <label :for="'todo-'+todo.id">{{todo.description}}</label>
+                        <label :for="todo.id">{{todo.description}}</label>
                     </li>
 
                 </ul>

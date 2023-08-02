@@ -54,7 +54,31 @@ Vue.createApp({
     },
 
     updateTodo() {
-      // change API state of done
+      console.log(event.target.id);
+      console.log();
+      let todoIndex = 0;
+      let i = 0;
+
+      for (let i = 0; i < this.state.length; i++) {
+        if (event.target.id === this.state[i].id) {
+          todoIndex = i;
+          console.log(i);
+          console.log(this.state[i].id);
+          console.log(this.state[i]);
+        }
+      }
+      const todo = this.state[i];
+      console.log(this.state[i]);
+      fetch("http://localhost:4730/todos/" + event.target.id, {
+        method: "PUT",
+        headers: { "content-type": "application/JSON" },
+        body: JSON.stringify(todo),
+      })
+        .then((res) => res.json())
+        .then((updatedTodo) => {
+          this.syncStorage(this.state);
+          // save state to local storage
+        });
     },
 
     filterTodos() {
