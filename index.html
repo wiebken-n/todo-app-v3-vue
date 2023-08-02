@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/normalize.css@latest/normalize.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=cabin:700|aldrich:400" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+</head>
+
+<body>
+    <main id="app">
+        <button class="btn-switch-language">DE</button>
+        <div class="app-container">
+            <div class="header-container">
+                <h1>Todo App</h1>
+            </div>
+            <div class="todo-input-container">
+                <div class="text-input-container">
+                    <input class="text-todo-input" type="text" name="todo-input" id="todo-input"
+                        placeholder="What needs to be done?" value="" v-model.trim="newTodoDescription">
+                    <button class="button-add-todo" @click="addTodo">Add Todo</button>
+                </div>
+
+                <div class="todo-selection-container">
+                    <div class="all-todos-container">
+                        {{todoFilter}}
+                        <input class="check-all-todos" type="radio" name="todo-filter" value="filterAll" id="all-todos"
+                            v-model="todoFilter">
+                        <label class="label-all-todos" for="all-todos">All</label>
+                    </div>
+                    <div class="open-todos-container">
+                        <input class="check-open-todos" type="radio" name="todo-filter" value="filterOpen"
+                            id="open-todos" v-model="todoFilter">
+                        <label class="label-open-todos" for="open-todos">Open</label>
+                    </div>
+                    <div class="done-todos-container">
+                        <input class="check-done-todos" type="radio" name="todo-filter" value="filterDone"
+                            id="done-todos" v-model="todoFilter">
+                        <label class="label-done-todos" for="done-todos">Done</label>
+                    </div>
+                </div>
+                <div class="remove-todos-container">
+                    <button class="button-remove-done-todos">Remove done Todos</button>
+                </div>
+            </div>
+            <div class="todo-list-container">
+                <ul class="todo-list" id="todo-list">
+                    <li v-for="todo of state" :key="todo.id">
+                        <input type="checkbox" v-model="todo.done" :checked="todo.done" :id="'todo-'+todo.id">
+                        <label :for="'todo-'+todo.id">{{todo.description}}</label>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+    </main>
+</body>
+<script src="https://unpkg.com/vue@next"></script>
+<script src="script.js"></script>
+
+</html>
