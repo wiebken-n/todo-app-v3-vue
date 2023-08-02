@@ -29,17 +29,17 @@
                     <div class="all-todos-container">
                         {{todoFilter}}
                         <input class="check-all-todos" type="radio" name="todo-filter" value="filterAll" id="all-todos"
-                            v-model="todoFilter">
+                            v-model="todoFilter" @change="filterTodos">
                         <label class="label-all-todos" for="all-todos">All</label>
                     </div>
                     <div class="open-todos-container">
                         <input class="check-open-todos" type="radio" name="todo-filter" value="filterOpen"
-                            id="open-todos" v-model="todoFilter">
+                            id="open-todos" v-model="todoFilter" @change="filterTodos">
                         <label class="label-open-todos" for="open-todos">Open</label>
                     </div>
                     <div class="done-todos-container">
                         <input class="check-done-todos" type="radio" name="todo-filter" value="filterDone"
-                            id="done-todos" v-model="todoFilter">
+                            id="done-todos" v-model="todoFilter" @change="filterTodos">
                         <label class="label-done-todos" for="done-todos">Done</label>
                     </div>
                 </div>
@@ -49,8 +49,9 @@
             </div>
             <div class="todo-list-container">
                 <ul class="todo-list" id="todo-list">
-                    <li v-for="todo of state" :key="todo.id">
-                        <input type="checkbox" v-model="todo.done" :checked="todo.done" :id="'todo-'+todo.id">
+                    <li v-for="todo of stateRendered" :key="todo.id">
+                        <input type="checkbox" v-model="todo.done" :checked="todo.done" :id="'todo-'+todo.id"
+                            @change="updateTodo">
                         <label :for="'todo-'+todo.id">{{todo.description}}</label>
                     </li>
 

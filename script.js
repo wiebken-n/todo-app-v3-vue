@@ -4,8 +4,9 @@ Vue.createApp({
   data() {
     return {
       state: [],
+      stateRendered: [],
       newTodoDescription: "",
-      todoFilter: "",
+      todoFilter: "filterAll",
     };
   },
   methods: {
@@ -49,44 +50,48 @@ Vue.createApp({
           console.log("its new!");
         }
       }
+      syncStorage(state);
+    },
 
-      /*else {
-        state.forEach((todo) => {
-          // check for doubles
-          if (
-            newTodo.description.toString().toLowerCase() ===
-            todo.description.toString().toLowerCase()
-          ) {
-            double = true;
-            alertTodoDouble();
-            textInput.value = "";
-          }
-        });
-        // post new Todo to API & state, overwrite localstorage with new state
-        if (double === false) {
-          fetch("http://localhost:4730/todos", {
-            method: "POST",
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify(newTodo),
-          })
-            .then((res) => res.json())
-            .then((newTodoFromApi) => {
-              state.push(newTodoFromApi);
-              saveState();
-              sortTodos();
-              renderTodos();
-            });
-        }
-      }
-      */
+    updateTodo() {
+      // change API state of done
     },
 
     filterTodos() {
+      let tempState = [];
+      if (this.todoFilter === "" || this.todoFilter === "filterAll") {
+        this.state.forEach((todo) => {
+          tempState.push(todo);
+        });
+      } else if (this.todoFilter === "filterOpen") {
+        this.state.forEach((todo) => {
+          if (!todo.done) {
+            tempState.push(todo);
+          }
+        });
+      } else if (this.todoFilter === "filterDone") {
+        this.state.forEach((todo) => {
+          if (todo.done) {
+            tempState.push(todo);
+          }
+        });
+      }
+      console.log(tempState);
+      this.stateRendered = tempState;
+      console.log(this.stateRendered);
+
       // render todos according to radio button status
     },
 
     removeTodos() {
       // remove todo with that ID in API
+
+      syncStorage(state);
+    },
+
+    syncStorage(state) {
+      const jsonState = JSON.stringify(state);
+      localStorage.setItem("storageState", jsonState);
     },
   },
   computed: {
@@ -105,7 +110,9 @@ Vue.createApp({
       .then((res) => res.json())
       .then((todosArrayApi) => {
         this.state = todosArrayApi;
+        this.stateRendered = todosArrayApi;
         console.log(this.state);
+        this.syncStorage(this.state);
       });
   },
 }).mount("#app");
