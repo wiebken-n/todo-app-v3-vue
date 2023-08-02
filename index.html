@@ -22,12 +22,11 @@
                 <div class="text-input-container">
                     <input class="text-todo-input" type="text" name="todo-input" id="todo-input"
                         placeholder="What needs to be done?" value="" v-model.trim="newTodoDescription">
-                    <button class="button-add-todo" @click="addTodo">Add Todo</button>
+                    <button class="button-add-todo" @click="addTodo()">Add Todo</button>
                 </div>
 
                 <div class="todo-selection-container">
                     <div class="all-todos-container">
-                        {{todoFilter}}
                         <input class="check-all-todos" type="radio" name="todo-filter" value="filterAll" id="all-todos"
                             v-model="todoFilter" @change="filterTodos">
                         <label class="label-all-todos" for="all-todos">All</label>
@@ -44,14 +43,15 @@
                     </div>
                 </div>
                 <div class="remove-todos-container">
-                    <button class="button-remove-done-todos">Remove done Todos</button>
+                    <button class="button-remove-done-todos" @click="removeTodos()">Remove done
+                        Todos</button>
                 </div>
             </div>
             <div class="todo-list-container">
                 <ul class="todo-list" id="todo-list">
                     <li v-for="todo of stateRendered" :key="'todo-'+todo.id">
                         <input type="checkbox" v-model="todo.done" :checked="todo.done" :id="todo.id"
-                            @change="updateTodo">
+                            @change="updateTodo()">
                         <label :for="todo.id">{{todo.description}}</label>
                     </li>
 

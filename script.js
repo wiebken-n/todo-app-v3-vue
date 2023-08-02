@@ -45,12 +45,14 @@ Vue.createApp({
             .then((res) => res.json())
             .then((newTodoFromApi) => {
               this.state.push(newTodoFromApi);
+              this.syncStorage(this.state);
+              this.filterTodos();
             });
 
           console.log("its new!");
         }
       }
-      syncStorage(state);
+      this.syncStorage(this.state);
     },
 
     updateTodo() {
@@ -77,6 +79,7 @@ Vue.createApp({
         .then((res) => res.json())
         .then((updatedTodo) => {
           this.syncStorage(this.state);
+          this.filterTodos();
           // save state to local storage
         });
     },
@@ -108,9 +111,21 @@ Vue.createApp({
     },
 
     removeTodos() {
-      // remove todo with that ID in API
-
-      syncStorage(state);
+      for (let todo of this.state) {
+        if (todo.done === true) {
+          const todoID = todo.id;
+          fetch("http://localhost:4730/todos/" + todoID, {
+            method: "DELETE",
+          })
+            .then((res) => res.json())
+            .then(() => {
+              const todoIndex = this.state.indexOf(todo);
+              this.state.splice(todoIndex, 1);
+              this.syncStorage(this.state);
+              this.filterTodos();
+            });
+        }
+      }
     },
 
     syncStorage(state) {
