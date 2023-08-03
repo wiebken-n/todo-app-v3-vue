@@ -9,11 +9,32 @@ Vue.createApp({
       todoFilter: "filterAll",
     };
   },
+
+  computed: {},
+
   methods: {
+    changeTodoStyle(todoDoneState) {
+      return {
+        class: {
+          "done-todo": todoDoneState,
+        },
+      }; /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      return{
+        class: {
+         "done-todo": 
+        }
+      }
+d 
+      },*/
+    },
+
     addTodo() {
       const newTodo = { description: this.newTodoDescription, done: false };
       let double = false;
-      if (this.newTodoDescription === "") {
+      if (
+        this.newTodoDescription === "" ||
+        this.newTodoDescription.length < 5
+      ) {
         console.log("No valid Todo");
         alert("Please enter a description for your Todo");
         return;

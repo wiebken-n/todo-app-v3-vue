@@ -21,7 +21,7 @@
             <div class="todo-input-container">
                 <div class="text-input-container">
                     <input class="text-todo-input" type="text" name="todo-input" id="todo-input"
-                        @keydown.enter="addTodo()" placeholder="What needs to be done?" value=""
+                        @keydown.enter="addTodo()" placeholder="What needs to be done?"
                         v-model.trim="newTodoDescription">
                     <button class="button-add-todo" @click="addTodo()">Add Todo</button>
                 </div>
@@ -53,7 +53,7 @@
                     <li v-for="todo of stateRendered" :key="'todo-'+todo.id">
                         <input type="checkbox" v-model="todo.done" :checked="todo.done" :id="todo.id"
                             @change="updateTodo()">
-                        <label :for="todo.id">{{todo.description}}</label>
+                        <label v-bind="changeTodoStyle(todo.done)" :for="todo.id">{{todo.description}}</label>
                     </li>
 
                 </ul>
